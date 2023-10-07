@@ -10,6 +10,7 @@ class Lesson(models.Model):
     image = models.ImageField(upload_to='lesson_photo', verbose_name='превью (картинка)', **NULLABLE)
     link = models.TextField(verbose_name='ссылка на видео')
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     choice_course = models.ForeignKey(Course, default=1, on_delete=models.CASCADE, related_name='lessons')
 
     class Meta:

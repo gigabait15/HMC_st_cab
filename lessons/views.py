@@ -3,31 +3,38 @@ from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from lessons.models import Lesson, Pay
 from lessons.serializers import LessonSerializer, PaySerializer
+from users.permissions import IsModerators, IsUsers
 
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsUsers, IsModerators]
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsUsers, IsModerators]
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsUsers]
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsUsers, IsModerators]
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
+    permission_classes = [IsUsers]
 
 
 class PayCreateAPIView(generics.CreateAPIView):
     serializer_class = PaySerializer
     queryset = Pay.objects.all()
+    permission_classes = [IsUsers]
 
 class PayListAPIView(generics.ListAPIView):
     serializer_class = PaySerializer
@@ -35,6 +42,8 @@ class PayListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('payment_method', 'is_paid')
     ordering_fields = ('date_of_payment',)
+    permission_classes = [IsUsers]
 
 class PayDeleteAPIView(generics.DestroyAPIView):
     queryset = Pay.objects.all()
+    permission_classes = [IsUsers]
