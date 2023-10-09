@@ -9,12 +9,12 @@ from users.permissions import IsModerators, IsUsers
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsUsers, IsModerators]
+    permission_classes = [IsUsers | IsModerators]
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsUsers, IsModerators]
+    permission_classes = [IsUsers | IsModerators]
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
@@ -24,7 +24,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsUsers, IsModerators]
+    permission_classes = [IsUsers | IsModerators]
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()

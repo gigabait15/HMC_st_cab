@@ -14,5 +14,5 @@ class IsModerators(BasePermission):
 
 class IsUsers(BasePermission):
 
-    def has_permission(self, request, view):
-        return request.user == view.get_object().user
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user
