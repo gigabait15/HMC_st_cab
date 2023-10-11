@@ -19,7 +19,12 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsUsers]
+    permission_classes = [IsUsers, ~IsModerators]
+
+    def perform_create(self, serializer):
+        new_obj = serializer.save()
+        new_obj.user = self.request.user
+        new_obj.save()
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
@@ -28,7 +33,7 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
-    permission_classes = [IsUsers]
+    permission_classes = [IsUsers, ~IsModerators]
 
 
 class PayCreateAPIView(generics.CreateAPIView):
