@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from users.models import User
 
-class Command(BaseCommand):
+class UserCommand(BaseCommand):
     help = 'создание пользователя'
 
     def handle(self, *args, **options):
@@ -17,3 +17,5 @@ class Command(BaseCommand):
         user.save()
 
         self.stdout.write(self.style.SUCCESS('Пользователь создан'))
+
+        return user

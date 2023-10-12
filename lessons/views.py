@@ -2,7 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from lessons.models import Lesson, Pay
-from lessons.serializers import LessonSerializer, PaySerializer
+from lessons.paginators import LessonPaginator
+from lessons.serializers import LessonSerializer, PaySerializer, LessonCreateSerializer
 from users.permissions import IsModerators, IsUsers
 
 
@@ -10,6 +11,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsUsers | IsModerators]
+    pagination_class = LessonPaginator
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
@@ -17,7 +19,7 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
     permission_classes = [IsUsers | IsModerators]
 
 class LessonCreateAPIView(generics.CreateAPIView):
-    serializer_class = LessonSerializer
+    serializer_class = LessonCreateSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsUsers, ~IsModerators]
 

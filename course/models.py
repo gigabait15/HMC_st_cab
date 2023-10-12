@@ -17,3 +17,15 @@ class Course(models.Model):
         return f"{self.name} {self.description}"
 
 
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    subscribed = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
+
+    def __str__(self):
+        return f"{self.user} {self.course}"
+
