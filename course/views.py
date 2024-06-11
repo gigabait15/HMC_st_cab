@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from course.models import Course, Subscription
 from course.paginators import CoursePaginator
@@ -13,22 +12,20 @@ class CourseViewSet(ModelViewSet):
     pagination_class = CoursePaginator
 
     def perform_create(self, serializer):
-        new_obj = serializer.save()
-        new_obj.user = self.request.user
-        new_obj.save()
+        serializer.save(user=self.request.user)
 
-    # def get_permissions(self):
-    #     if self.action in ["create", "delete"]:
-    #         permission_classes = [~IsModerators]
-    #     else:
-    #         permission_classes = [IsModerators | IsUsers]
-    #     return [permission() for permission in permission_classes]
+    def get_permissions(self):
+        if self.action in ["create", "delete"]:
+            permission_classes = [~IsModerators]
+        else:
+            permission_classes = [IsUsers]
+        return [permission() for permission in permission_classes]
 
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
-    # permission_classes = [IsUsers, ~IsModerators]
+    permission_classes = [IsUsers, ~IsModerators]
 
 class SubscriptionDeleteAPIView(generics.DestroyAPIView):
     queryset = Subscription.objects.all()
-    # permission_classes = [IsUsers, ~IsModerators]
+    permission_classes = [IsUsers, ~IsModerators]

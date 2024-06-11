@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from course.models import Course, Subscription
+# from course.models import Course, Subscription
 # from course.services import payment_create
-from lessons.models import Lesson, Pay
+from lessons.models import Lesson
 from lessons.serializers import LessonSerializer
+from lessons.validators import LinkValidator
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -41,6 +43,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     subscribed = serializers.SerializerMethodField()
+
     class Meta:
         model = Subscription
         fields = '__all__'
