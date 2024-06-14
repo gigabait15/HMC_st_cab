@@ -14,7 +14,7 @@ class PayViewSet(viewsets.ModelViewSet):
     serializer_class = PaySerializer
     queryset = Pay.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ('course', 'User', 'payment_method')
+    filterset_fields = ('course', 'user', 'payment_method')
     ordering_fields = ('date_of_payment',)
 
 
@@ -32,6 +32,8 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return PublicUserSerializer
         if self.request.user != self.get_object():
             return PublicUserSerializer
         return PrivateUserSerializer
