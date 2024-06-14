@@ -16,10 +16,6 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
-        permissions = [
-            ("can_view_lesson", f"Can view lesson "),
-            (f"can_update_lesson", f"Can update lesson"),
-        ]
 
     def __str__(self):
         return f"{self.name} {self.link}"

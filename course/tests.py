@@ -1,7 +1,5 @@
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from course.management.commands.csu import UserCommand
-from course.models import Course, Subscription
 from users.models import User
 
 

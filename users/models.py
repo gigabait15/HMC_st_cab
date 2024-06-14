@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
-from lessons.models import Lesson
+
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -30,7 +30,7 @@ class Pay(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, related_name='pays')
     course = models.ForeignKey('course.Course', on_delete=models.CASCADE, **NULLABLE, related_name='course')
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE, related_name='lesson')
+    lesson = models.ForeignKey('lessons.Lesson', on_delete=models.CASCADE, **NULLABLE, related_name='lesson')
 
     date_of_payment = models.DateField(verbose_name='дата оплаты', default=now)
     is_paid = models.IntegerField(verbose_name='оплаченный курс или урок', choices=PAID)

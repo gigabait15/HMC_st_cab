@@ -9,6 +9,8 @@ class LinkValidator:
 
     def __call__(self, value):
         val = dict(value).get(self.field)
+        if val is None:
+            return
 
         banned_links = r'https?://\S+|www\.\S+'
         correct_link = r'(?:https?://)?(?:www\.)?youtube\.com'

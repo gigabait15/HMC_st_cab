@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
-    'corsheaders',
     'drf_yasg',
+    'corsheaders',
+    'stripe',
 
     'lessons',
     'course',
@@ -124,6 +125,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
             'django_filters.rest_framework.DjangoFilterBackend',
         ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+
 }
 
 # Настройки срока действия токенов
@@ -167,3 +170,4 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = False
 
 API_KEY = 'sk_test_51O0SRHCoDAnTsUGsoReyTDEqZRf6SMc8bhnLrHkFXIhPJpFyF6qE5Xvmjjd4oitycXGf7i5tHXWoKGMmlHy3b7Tx00YL1vXl2j'
+
