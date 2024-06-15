@@ -12,6 +12,7 @@ class Course(models.Model):
 
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='user', default=1)
     product_id = models.CharField(max_length=150, **NULLABLE)
+    lesson_count = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'курс'

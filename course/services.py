@@ -1,7 +1,7 @@
 import stripe
 from config import settings
 from course.models import Course
-from users.models import Pay
+
 
 stripe.api_key = settings.API_KEY
 

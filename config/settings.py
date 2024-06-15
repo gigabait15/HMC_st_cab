@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'stripe',
+    'django_celery_beat',
+    'celery',
+    'redis',
 
     'lessons',
     'course',
@@ -171,3 +174,37 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 API_KEY = 'sk_test_51O0SRHCoDAnTsUGsoReyTDEqZRf6SMc8bhnLrHkFXIhPJpFyF6qE5Xvmjjd4oitycXGf7i5tHXWoKGMmlHy3b7Tx00YL1vXl2j'
 
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv("LOCATION"),
+            "TIMEOUT": 60,
+        }
+    }
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = 'UTC'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# Настройки почты
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# Хост и порт SMTP-сервера Яндекса
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+# Почта на Яндексе
+EMAIL_HOST_USER = "AiMobil@yandex.ru"
+# Пароль от почты на Яндексе
+EMAIL_HOST_PASSWORD = "kbrnpauvjwqfjxsa"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
