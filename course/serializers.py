@@ -39,7 +39,11 @@ class CourseSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_count_lessons(instance):
-        return Lesson.objects.filter(choice_course=instance).count()
+        lesson_count = Lesson.objects.filter(choice_course=instance).count()
+        if instance.lesson_count != lesson_count:
+            instance.lesson_count = lesson_count
+            instance.save()
+        return lesson_count
 
     def get_create_price(self, instance):
         request_method = self.context['request'].method
@@ -121,20 +125,25 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    subscribed = serializers.SerializerMethodField()
+    subscribed = serializers.BooleanField()
 
     class Meta:
         model = Subscription
-        fields = '__all__'
+        fields = "__all__"
 
-    def get_subscribed(self, obj):
-        request = self.context.get('request')
-        if request.user.is_authenticated:
-            user = request.user
-            try:
-                subscription = Subscription.objects.get(user=user, course=obj)
-                return subscription.subscribed
-            except Subscription.DoesNotExist:
-                return False
-        return False
+    def create(self, validated_data):
+        user = self.context['request'].user
+        subscribed = validated_data.get('subscribed', False)
+        course = validated_data.get('course')
 
+        subscription, created = Subscription.objects.get_or_create(
+            user=user,
+            course=course,
+            defaults={'subscribed': subscribed}
+        )
+
+        if not created:
+            subscription.subscribed = subscribed
+            subscription.save()
+
+        return subscription

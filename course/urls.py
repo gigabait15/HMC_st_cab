@@ -1,12 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from course.views import CourseViewSet, SubscriptionCreateAPIView, SubscriptionDeleteAPIView
+from .views import CourseViewSet, SubscriptionViewSet
+
 
 router = DefaultRouter()
 router.register(r'', CourseViewSet, basename='course')
-
+router.register(r'subscription', SubscriptionViewSet, basename='subscription')
 
 urlpatterns = [
-    path('subscription/create/', SubscriptionCreateAPIView.as_view()),
-    path('subscription/delete/<int:pk>/', SubscriptionDeleteAPIView.as_view()),
-] + router.urls
+    path('', include(router.urls)),
+]
